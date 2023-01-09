@@ -18,16 +18,20 @@ export class ProductsService {
   }
 
   async findOne(name: string) {
-    let product = await this.prisma.product.findFirst({
-      where: {
-        name,
-      },
-    });
+    let product = await this.prisma.product
+      .findMany({
+        where: {
+          name: {
+            contains: name,
+          },
+        },
+      })
+      .then((products) => products[0]);
 
     if (!product) {
       throw new HttpException(
         'Não foi possível encontrar produto com o nome informado.',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     }
 
