@@ -17,19 +17,25 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  async findAll() {
+    return await this.productsService.findAll();
   }
 
   @Get(':name')
   findOne(@Param('name') name: string) {
     return this.productsService.findOne(name);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.productsService.delete(id);
   }
 }

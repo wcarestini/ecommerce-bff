@@ -8,8 +8,27 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   create(createProductDto: CreateProductDto) {
+    const { name, description, price, imageUrl } = createProductDto;
+    const categories = {
+      create: createProductDto.categories.map((category) => {
+        return {
+          category: {
+            connect: {
+              id: category,
+            },
+          },
+        };
+      }),
+    };
+
     return this.prisma.product.create({
-      data: createProductDto,
+      data: {
+        name,
+        description,
+        price,
+        imageUrl,
+        categories,
+      },
     });
   }
 
@@ -36,5 +55,16 @@ export class ProductsService {
     }
 
     return product;
+  }
+
+  async delete(id: number): Promise<any> {
+    if (typeof id === 'string') {
+      id = parseInt(id);
+    }
+    return await this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
