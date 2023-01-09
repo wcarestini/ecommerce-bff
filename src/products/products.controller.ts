@@ -23,19 +23,30 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.productsService.findAll();
   }
 
-  @Get(':name')
-  findOne(@Param('name') name: string) {
-    return this.productsService.findOne(name);
+  @Get('search/:searchTerm')
+  find(@Param('searchTerm') searchTerm: string) {
+    return this.productsService.findOneByName(searchTerm);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.productsService.delete(id);
+  }
+
+  @Get('category/:categoryName')
+  findByCategoryName(@Param('categoryName') categoryName: string) {
+    return this.productsService.findByCategoryName(categoryName);
+  }
+
+  @Get(':id')
+  findById(@Param('id') id: number) {
+    return this.productsService.findById(id);
   }
 }
