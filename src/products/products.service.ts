@@ -54,8 +54,8 @@ export class ProductsService {
     }
 
     return products.map((product) => {
-      const { id, name, price } = product;
-      return { id, name, price };
+      const { id, name, price, imageUrl } = product;
+      return { id, name, price, imageUrl };
     });
   }
 
