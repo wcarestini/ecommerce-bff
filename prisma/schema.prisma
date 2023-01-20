@@ -30,3 +30,12 @@ model CategoriesOnProducts {
 
   @@id([productId, categoryId])
 }
+
+model User {
+  id        Int    @id @default(autoincrement())
+  name      String
+  cpf       String
+  telephone String
+  email     String
+  password  String
+}
